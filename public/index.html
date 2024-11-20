@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog Platform</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to Blog Platform</h1>
+    <nav>
+      <a href="/login.html" class="btn">Login</a>
+      <a href="/register.html" class="btn">Register</a>
+    </nav>
+  </header>
+  
+  <main class="posts-container">
+    <div id="posts"></div>
+  </main>
+
+  <script>
+    async function loadPosts() {
+      const response = await fetch('/posts');
+      const posts = await response.json();
+      const postsDiv = document.getElementById('posts');
+      
+      postsDiv.innerHTML = posts.map(post => `
+        <article class="post">
+          ${post.image_url ? `<img src="${post.image_url}" alt="${post.title}">` : ''}
+          <h2>${post.title}</h2>
+          <p>${post.content}</p>
+          <small>Posted by ${post.username}</small>
+        </article>
+      `).join('');
+    }
+
+    loadPosts();
+  </script>
+</body>
+</html>
